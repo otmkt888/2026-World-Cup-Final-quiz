@@ -352,29 +352,20 @@
       />
     </a>
 
-    <!-- YouTube Video (thumbnail link — embedding disabled by uploader) -->
-    <a href="https://www.youtube.com/embed/O5698wzuFwM?si=suNHDjo0ro_lgMlZ" target="_blank" rel="noopener" class="block mb-10 group">
-      <div class="relative w-full rounded-lg overflow-hidden" style="box-shadow:0 4px 24px rgba(245,166,35,.3)">
-        <!-- Thumbnail: try maxres, falls back to hqdefault via onerror -->
-        <img
-          src="https://img.youtube.com/vi/4kaqK-cNiOk/maxresdefault.jpg"
-          onerror="this.src='https://img.youtube.com/vi/4kaqK-cNiOk/hqdefault.jpg'"
-          alt="12BET World Cup 2026 Video"
-          class="w-full block"
-        />
-        <!-- Play button overlay -->
-        <div class="absolute inset-0 flex items-center justify-center bg-black/40 group-hover:bg-black/25 transition-colors">
-          <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform"
-               style="background:rgba(255,0,0,.9); box-shadow:0 0 30px rgba(255,0,0,.6)">
-            <!-- Triangle play icon -->
-            <svg viewBox="0 0 24 24" class="w-7 h-7 sm:w-9 sm:h-9 ml-1 fill-white" xmlns="http://www.w3.org/2000/svg">
-              <polygon points="5,3 19,12 5,21"/>
-            </svg>
-          </div>
-        </div>
+    <!-- YouTube Video -->
+    <div class="mb-10">
+      <div class="relative w-full rounded-lg overflow-hidden" style="padding-top:56.25%; box-shadow:0 4px 24px rgba(245,166,35,.3)">
+        <iframe
+          class="absolute inset-0 w-full h-full"
+          src="https://www.youtube.com/embed/O5698wzuFwM?si=suNHDjo0ro_lgMlZ"
+          title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen
+        ></iframe>
       </div>
-      <p class="text-center text-white/40 text-xs mt-2 press-start">▶ 点击观看官方宣传影片</p>
-    </a>
+    </div>
 
   </section>
 
