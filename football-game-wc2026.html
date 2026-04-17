@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>【12BET】2026世界杯，MVP就是你 | 射门赢大奖</title>
+  <meta name="description" content="12BET 2026世界杯互动射门小游戏。移动鼠标瞄准，点击射门，赢取世界杯现场观赛豪华旅游大奖！" />
+  <meta property="og:title" content="12BET 2026世界杯 — MVP就是你" />
+  <meta property="og:description" content="射门赢大奖！世界杯双人行 · 豪华邮轮 · iPhone 17 Pro Max" />
+  <meta property="og:image" content="assets/wc%202026%20final%20place%20quiz/promotion-banner.jpg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="canonical" href="#" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Noto+Sans+SC:wght@400;700;900&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --gold: #F5A623;
+      --gold-dim: #c47d0e;
+      --bg: #0A0A14;
+      --bg-card: #12121F;
+      --bg-card2: #1A1A2E;
+      --neon-green: #00FF88;
+      --neon-red: #FF4444;
+      --neon-cyan: #00CCFF;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: #fff;
+      font-family: 'Noto Sans SC', sans-serif;
+      overflow-x: hidden;
+    }
+
+    .press-start { font-family: 'Press Start 2P', monospace; }
+
+    /* ── Marquee ── */
+    @keyframes marquee {
+      from { transform: translateX(100vw); }
+      to   { transform: translateX(-100%); }
+    }
+    .marquee-text { animation: marquee 28s linear infinite; white-space: nowrap; }
+
+    /* ── Glow/neon ── */
+    .neon-gold  { color: var(--gold);       text-shadow: 0 0 12px var(--gold), 0 0 30px var(--gold); }
+    .neon-green { color: var(--neon-green); text-shadow: 0 0 12px var(--neon-green), 0 0 30px var(--neon-green); }
+    .neon-red   { color: var(--neon-red);   text-shadow: 0 0 12px var(--neon-red); }
+    .neon-white { color: #fff;              text-shadow: 0 0 10px #fff; }
+
+    /* ── Pixel border ── */
+    .pixel-border {
+      border: 3px solid var(--gold);
+      box-shadow:
+        0 0 0 1px var(--bg),
+        0 0 0 4px var(--gold),
+        0 0 30px rgba(245,166,35,.25),
+        inset 0 0 20px rgba(245,166,35,.04);
+    }
+
+    /* ── Scanlines ── */
+    .scanlines { position: relative; }
+    .scanlines::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 3px,
+        rgba(0,0,0,.07) 3px,
+        rgba(0,0,0,.07) 4px
+      );
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    /* ── Animations ── */
+    @keyframes blink    { 0%,49%{opacity:1} 50%,100%{opacity:0} }
+    @keyframes pulseGlow {
+      0%,100%{ box-shadow: 0 0 18px rgba(245,166,35,.4); }
+      50%    { box-shadow: 0 0 40px rgba(245,166,35,.9), 0 0 80px rgba(245,166,35,.2); }
+    }
+    @keyframes slideUp  { from{transform:translateY(50px);opacity:0} to{transform:translateY(0);opacity:1} }
+    @keyframes bounceIn { 0%{transform:scale(.4);opacity:0} 60%{transform:scale(1.15)} 100%{transform:scale(1);opacity:1} }
+    @keyframes shake    { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
+    @keyframes floatUp  { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+    @keyframes spin     { to{transform:rotate(360deg)} }
+
+    .blink       { animation: blink 1s step-end infinite; }
+    .pulse-glow  { animation: pulseGlow 2s ease-in-out infinite; }
+    .slide-up    { animation: slideUp .7s ease forwards; }
+    .bounce-in   { animation: bounceIn .6s cubic-bezier(.36,.07,.19,.97) forwards; }
+    .float-up    { animation: floatUp 3s ease-in-out infinite; }
+
+    /* ── Retro button ── */
+    .retro-btn {
+      background: var(--gold);
+      color: #0A0A14;
+      border: none;
+      padding: 10px 28px;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 11px;
+      cursor: pointer;
+      box-shadow: 4px 4px 0 #7a4c00, 6px 6px 0 rgba(0,0,0,.5);
+      transition: all .1s;
+    }
+    .retro-btn:hover  { transform: translate(2px,2px); box-shadow: 2px 2px 0 #7a4c00; }
+    .retro-btn:active { transform: translate(4px,4px); box-shadow: none; }
+
+    /* ── CTA button ── */
+    .cta-btn {
+      display: inline-block;
+      background: linear-gradient(135deg, #F5A623, #FF6B00);
+      color: #fff;
+      text-decoration: none;
+      padding: 16px 40px;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 10px;
+      line-height: 1.6;
+      border-radius: 4px;
+      box-shadow: 0 0 30px rgba(245,166,35,.5), 5px 5px 0 #7a3300;
+      transition: all .2s;
+      cursor: pointer;
+    }
+    .cta-btn:hover { box-shadow: 0 0 55px rgba(245,166,35,.85), 5px 5px 0 #7a3300; transform: translateY(-2px); }
+
+    /* ── Prize card ── */
+    .prize-card {
+      background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-card2) 100%);
+      border: 2px solid;
+      border-radius: 10px;
+      padding: 24px 20px;
+      position: relative;
+      overflow: hidden;
+      transition: transform .25s, box-shadow .25s;
+    }
+    .prize-card::before {
+      content:'';
+      position:absolute; top:-50%; left:-50%;
+      width:200%; height:200%;
+      background:linear-gradient(transparent,rgba(255,255,255,.04),transparent);
+      transform:rotate(30deg);
+    }
+    .prize-card:hover { transform: translateY(-5px); }
+
+    /* ── Canvas ── */
+    #gameCanvas { display: block; width: 100%; cursor: crosshair; image-rendering: pixelated; }
+
+    /* ── Mascot: remove.bg already has transparency; fade edges with mask ── */
+    .mascot-img {
+      -webkit-mask-image: radial-gradient(ellipse 92% 90% at 50% 50%, black 55%, transparent 80%);
+      mask-image: radial-gradient(ellipse 92% 90% at 50% 50%, black 55%, transparent 80%);
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,.5));
+    }
+
+    /* ── Trophy: screen blend + ellipse mask hides rectangular bg ── */
+    .trophy-glow {
+      mix-blend-mode: screen;
+      -webkit-mask-image: radial-gradient(ellipse 82% 88% at 50% 42%, black 45%, transparent 72%);
+      mask-image: radial-gradient(ellipse 82% 88% at 50% 42%, black 45%, transparent 72%);
+      filter: drop-shadow(0 0 22px rgba(245,166,35,.9)) drop-shadow(0 0 55px rgba(245,166,35,.4));
+    }
+
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════
+       1. MARQUEE TOP BAR
+  ══════════════════════════════════════════════════ -->
+  <div class="overflow-hidden bg-[#F5A623] py-2">
+    <div class="marquee-text press-start text-[10px] text-black px-4">
+      ⚽ 2026世界杯 MVP就是你 &nbsp;★&nbsp; 射门赢豪礼 &nbsp;★&nbsp; FREE USA TRIP × 3 &nbsp;★&nbsp; LUXURY CRUISE × 1 &nbsp;★&nbsp; iPhone 17 Pro Max &nbsp;★&nbsp; MYR 400 FREE BET &nbsp;★&nbsp; PLAY · RANK · WIN &nbsp;★&nbsp; 12BET送你到现场 ⚽
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════
+       2. HEADER
+  ══════════════════════════════════════════════════ -->
+  <header class="max-w-4xl mx-auto px-4 pt-6 pb-4">
+    <div class="flex items-center justify-between">
+      <!-- Logo -->
+      <img src="assets/wc%202026%20final%20place%20quiz/12bet-logo.png" alt="12BET" class="h-10 md:h-14" />
+
+      <!-- Score board -->
+      <div class="press-start text-center hidden sm:block">
+        <div class="text-[9px] text-[#F5A623] mb-1">HIGH SCORE</div>
+        <div class="neon-gold text-2xl" id="scoreDisplay">00</div>
+      </div>
+
+      <!-- Player tag -->
+      <div class="press-start text-right">
+        <div class="text-[#F5A623] text-[10px] blink">PLAYER 1</div>
+        <div class="text-white/50 text-[9px] mt-1">▶ READY</div>
+      </div>
+    </div>
+
+    <!-- Title -->
+    <div class="text-center mt-8">
+      <div class="press-start text-[10px] text-[#F5A623]/70 tracking-widest mb-3">
+        — FIFA WORLD CUP 2026 —
+      </div>
+      <h1 class="press-start text-2xl sm:text-4xl md:text-5xl neon-white leading-snug">
+        2026 世界杯
+      </h1>
+      <h2 class="press-start text-2xl sm:text-4xl md:text-5xl neon-gold mt-3 leading-snug">
+        MVP 就是你
+      </h2>
+      <p class="text-white/70 text-sm sm:text-base md:text-lg mt-4 leading-relaxed">
+        踢一脚，感受世界杯激情！<br />
+        赛后更有 <span class="text-[#F5A623] font-bold whitespace-nowrap">12BET 惊喜豪礼</span>在等你 🏆
+      </p>
+    </div>
+  </header>
+
+
+  <!-- ═══════════════════════════════════════════════
+       3. GAME SECTION
+  ══════════════════════════════════════════════════ -->
+  <section class="max-w-4xl mx-auto px-4 py-6">
+
+    <!-- Canvas wrapper -->
+    <div class="scanlines pixel-border rounded-lg overflow-hidden relative" id="gameWrapper">
+      <canvas id="gameCanvas"></canvas>
+
+      <!-- Idle overlay -->
+      <div id="idleOverlay" class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-10">
+        <div class="press-start text-[#F5A623] text-xs sm:text-sm blink mb-2">
+          HOLD TO CHARGE · RELEASE TO SHOOT
+        </div>
+        <div class="text-white/50 text-xs">按住蓄力 · 松开射门</div>
+      </div>
+    </div>
+
+    <!-- Game hints row -->
+    <div class="flex justify-center gap-6 mt-3">
+      <span class="press-start text-[9px] text-white/40">🖱 MOVE = AIM</span>
+      <span class="press-start text-[9px] text-white/40">🖱 HOLD = CHARGE</span>
+      <span class="press-start text-[9px] text-white/40">🖱 RELEASE = SHOOT</span>
+      <span class="press-start text-[9px] text-white/40">⚽ GOAL = WIN</span>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════
+       4. PRIZE REVEAL SECTION (hidden until first shot)
+  ══════════════════════════════════════════════════ -->
+  <section id="prizeSection" class="hidden max-w-4xl mx-auto px-4 py-14">
+
+    <!-- Heading -->
+    <div class="text-center mb-10 slide-up">
+      <div class="press-start text-[#F5A623] text-[10px] tracking-widest mb-4">
+        ★★★ CONGRATULATIONS ★★★
+      </div>
+      <h3 class="press-start text-xl sm:text-3xl md:text-4xl neon-white leading-relaxed">
+        2026 世界杯总决赛
+      </h3>
+      <div class="press-start text-xl sm:text-3xl md:text-4xl neon-gold mt-3 leading-relaxed">
+        12BET 送你到现场！
+      </div>
+      <p class="text-[#F5A623]/80 mt-5 text-lg">
+        还有以下豪华大奖等你拿：
+      </p>
+    </div>
+
+    <!-- Trophy + Mascot hero -->
+    <div class="flex items-end justify-center gap-4 md:gap-10 mb-12 float-up">
+      <img
+        src="assets/wc%202026%20final%20place%20quiz/mascot-removebg-preview.png"
+        alt="FIFA 2026 吉祥物"
+        class="mascot-img h-44 sm:h-56 md:h-64 object-contain"
+      />
+      <img
+        src="assets/wc%202026%20final%20place%20quiz/fifa-trophy.png"
+        alt="FIFA World Cup Trophy"
+        class="trophy-glow h-32 sm:h-40 md:h-52 object-contain"
+      />
+    </div>
+
+    <!-- Prize cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
+
+      <!-- 1st -->
+      <div class="prize-card border-yellow-400 col-span-1 sm:col-span-2 lg:col-span-1"
+           style="box-shadow:0 0 24px rgba(255,215,0,.35)">
+        <div class="press-start text-xs text-yellow-400 mb-3">🥇 1ST PLACE</div>
+        <div class="text-4xl mb-3">✈️</div>
+        <div class="font-black text-white text-lg leading-snug mb-2">世界杯 2026<br/>双人旅游套餐</div>
+        <div class="text-yellow-400/80 text-sm">New York, USA · For 2 Pax</div>
+      </div>
+
+      <!-- 2nd–3rd -->
+      <div class="prize-card border-slate-400" style="box-shadow:0 0 18px rgba(192,192,192,.25)">
+        <div class="press-start text-xs text-slate-300 mb-3">🥈 2ND–3RD</div>
+        <div class="text-4xl mb-3">✈️</div>
+        <div class="font-black text-white text-base leading-snug mb-2">世界杯 2026<br/>单人旅游套餐</div>
+        <div class="text-slate-400/80 text-sm">New York, USA · For 1 Pax</div>
+      </div>
+
+      <!-- 4th -->
+      <div class="prize-card border-amber-700" style="box-shadow:0 0 18px rgba(180,100,30,.25)">
+        <div class="press-start text-xs text-amber-600 mb-3">🥉 4TH PLACE</div>
+        <div class="text-4xl mb-3">🚢</div>
+        <div class="font-black text-white text-base leading-snug mb-2">东南亚豪华<br/>邮轮双人行</div>
+        <div class="text-amber-600/80 text-sm">Luxury SE Asia Cruise × 2</div>
+      </div>
+
+      <!-- 5th -->
+      <div class="prize-card border-cyan-400" style="box-shadow:0 0 18px rgba(0,200,255,.2)">
+        <div class="press-start text-xs text-cyan-400 mb-3">5TH PLACE</div>
+        <div class="text-4xl mb-3">📱</div>
+        <div class="font-black text-white text-lg leading-snug mb-2">iPhone 17<br/>Pro Max</div>
+        <div class="text-cyan-400/70 text-sm">Latest Apple flagship</div>
+      </div>
+
+      <!-- 6th–10th -->
+      <div class="prize-card border-green-500" style="box-shadow:0 0 18px rgba(0,255,136,.2)">
+        <div class="press-start text-xs text-green-400 mb-3">6TH–10TH</div>
+        <div class="text-4xl mb-3">💰</div>
+        <div class="font-black text-white text-lg leading-snug mb-2">MYR 400<br/>免费投注金</div>
+        <div class="text-green-400/70 text-sm">Free Bet × 5 winners</div>
+      </div>
+
+      <!-- 11th–30th -->
+      <div class="prize-card border-[#F5A623]" style="box-shadow:0 0 18px rgba(245,166,35,.2)">
+        <div class="press-start text-xs text-[#F5A623] mb-3">11TH–30TH</div>
+        <div class="text-4xl mb-3">💸</div>
+        <div class="font-black text-white text-lg leading-snug mb-2">MYR 160<br/>免费投注金</div>
+        <div class="text-[#F5A623]/70 text-sm">Free Bet × 20 winners</div>
+      </div>
+
+    </div>
+
+    <!-- CTA -->
+    <div class="text-center mb-10">
+      <a href="https://www.12bet.com/en/event/wc26trip" target="_blank" class="cta-btn pulse-glow">
+        ⚽ 立即参赛，赢取大奖 →
+      </a>
+    </div>
+
+    <!-- Promotion Banner -->
+    <a href="https://www.12bet.com/en/event/wc26trip" target="_blank" class="block mb-8">
+      <img
+        src="assets/wc%202026%20final%20place%20quiz/promotion-banner.jpg"
+        alt="12BET World Cup 2026 Promotion"
+        class="w-full rounded-lg hover:opacity-90 transition-opacity"
+        style="box-shadow:0 4px 24px rgba(245,166,35,.3)"
+      />
+    </a>
+
+    <!-- YouTube Video (thumbnail link — embedding disabled by uploader) -->
+    <a href="https://www.youtube.com/watch?v=4kaqK-cNiOk" target="_blank" rel="noopener" class="block mb-10 group">
+      <div class="relative w-full rounded-lg overflow-hidden" style="box-shadow:0 4px 24px rgba(245,166,35,.3)">
+        <!-- Thumbnail: try maxres, falls back to hqdefault via onerror -->
+        <img
+          src="https://img.youtube.com/vi/4kaqK-cNiOk/maxresdefault.jpg"
+          onerror="this.src='https://img.youtube.com/vi/4kaqK-cNiOk/hqdefault.jpg'"
+          alt="12BET World Cup 2026 Video"
+          class="w-full block"
+        />
+        <!-- Play button overlay -->
+        <div class="absolute inset-0 flex items-center justify-center bg-black/40 group-hover:bg-black/25 transition-colors">
+          <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform"
+               style="background:rgba(255,0,0,.9); box-shadow:0 0 30px rgba(255,0,0,.6)">
+            <!-- Triangle play icon -->
+            <svg viewBox="0 0 24 24" class="w-7 h-7 sm:w-9 sm:h-9 ml-1 fill-white" xmlns="http://www.w3.org/2000/svg">
+              <polygon points="5,3 19,12 5,21"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <p class="text-center text-white/40 text-xs mt-2 press-start">▶ 点击观看官方宣传影片</p>
+    </a>
+
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════
+       5. FOOTER
+  ══════════════════════════════════════════════════ -->
+  <footer class="border-t border-white/10 py-8 px-4 text-center text-xs text-white/25">
+    <p>© 2026 12BET · Lead with Sincerity</p>
+    <p class="mt-1">本网站仅供娱乐用途。请负责任地博彩。未满 18 岁不得参与。</p>
+    <p class="mt-1">详情请参阅活动条款与条件，12BET 保留最终解释权。</p>
+  </footer>
+
+
+  <!-- ═══════════════════════════════════════════════
+       FLOATING CTA
+  ══════════════════════════════════════════════════ -->
+  <a
+    href="https://www.12bet.com/en/event/wc26trip"
+    target="_blank"
+    class="fixed bottom-5 right-5 z-50 bg-[#F5A623] hover:bg-yellow-400 text-black rounded-full px-4 py-3 press-start text-[9px] shadow-xl pulse-glow transition-colors"
+  >
+    JOIN NOW
+  </a>
+
+
+  <!-- ═══════════════════════════════════════════════
+       GAME SCRIPT
+  ══════════════════════════════════════════════════ -->
+  <script>
+    /* ────────────────────────────────────────────────
+       CONSTANTS
+    ──────────────────────────────────────────────── */
+    const W = 800, H = 460;
+    const GX = 148, GY = 52, GW = 504, GH = 210, GP = 8;
+    const BSX = W / 2, BSY = 418, BSR = 15;
+    const KSX = GX + GW / 2;
+    const KY  = GY + GH - 82;
+
+    /* ────────────────────────────────────────────────
+       STATE
+    ──────────────────────────────────────────────── */
+    let state  = 'ready';  // ready | charging | shooting | result
+    let aimX   = KSX, aimY = GY + GH / 2;
+    let mouseX = KSX, mouseY = GY + GH / 2;
+    let keeperCurrentX = KSX, keeperTargetX = KSX;
+    let animT  = 0;
+    let idleT  = 0;
+    let ballRot = 0;
+    let isGoal  = false;
+    let score   = 0;
+    let comboCount = 0;
+    let resultAlpha = 0;
+    let particles   = [];
+    let rafId, resultTimerID;
+
+    // ── Charge mechanic
+    let chargeT    = 0;     // 0-1 power level
+    let chargeRate = 0.022; // fills in ~0.7s
+
+    // ── Wind
+    let windX = 0;
+
+    // ── Ball trail
+    let ballTrail = [];
+
+    // ── Screen FX
+    let screenShakeAmt = 0;
+    let goalFlash      = 0;
+    let crowdExplode   = 0;
+    let slowMoActive   = false;
+
+    /* ────────────────────────────────────────────────
+       CANVAS SETUP
+    ──────────────────────────────────────────────── */
+    const canvas = document.getElementById('gameCanvas');
+    const ctx    = canvas.getContext('2d');
+    canvas.width  = W;
+    canvas.height = H;
+
+    /* ────────────────────────────────────────────────
+       HELPERS
+    ──────────────────────────────────────────────── */
+    const lerp = (a, b, t) => a + (b - a) * t;
+    const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+
+    /* ────────────────────────────────────────────────
+       DRAW: BACKGROUND
+    ──────────────────────────────────────────────── */
+    function drawBg() {
+      // Sky
+      const sky = ctx.createLinearGradient(0, 0, 0, H * .62);
+      sky.addColorStop(0, '#04040e');
+      sky.addColorStop(1, '#0a1520');
+      ctx.fillStyle = sky;
+      ctx.fillRect(0, 0, W, H * .62);
+
+      // Stadium lights
+      drawLight(70,  28, '#ffe080', 110);
+      drawLight(W - 70, 28, '#ffe080', 110);
+
+      // Crowd
+      drawCrowd();
+
+      // Pitch
+      const pitch = ctx.createLinearGradient(0, H * .60, 0, H);
+      pitch.addColorStop(0,   '#0c2a09');
+      pitch.addColorStop(.5,  '#0f3a0c');
+      pitch.addColorStop(1,   '#0a2008');
+      ctx.fillStyle = pitch;
+      ctx.fillRect(0, H * .59, W, H * .41);
+
+      // Alternating stripe
+      for (let i = 0; i < 8; i++) {
+        if (i % 2 === 0) {
+          ctx.fillStyle = 'rgba(255,255,255,.018)';
+          ctx.fillRect(i * W / 8, H * .59, W / 8, H);
+        }
+      }
+
+      // Field lines
+      ctx.strokeStyle = 'rgba(255,255,255,.18)';
+      ctx.lineWidth = 1.5;
+
+      // Penalty spot
+      ctx.fillStyle = 'rgba(255,255,255,.45)';
+      ctx.beginPath(); ctx.arc(W/2, H*.88, 4, 0, Math.PI*2); ctx.fill();
+
+      // Penalty arc (perspective ellipse)
+      ctx.beginPath();
+      ctx.ellipse(W/2, H*.88, W*.16, H*.038, 0, 0, Math.PI*2);
+      ctx.stroke();
+
+      // 6-yard box
+      ctx.strokeRect(GX + GW*.18, GY + GH, GW*.64, H*.055);
+
+      // 18-yard box
+      ctx.strokeRect(GX - GW*.12, GY + GH, GW*1.24, H*.17);
+    }
+
+    function drawLight(x, y, color, r) {
+      const pulse = .75 + Math.sin(idleT * .9 + x * .008) * .25;
+      const g = ctx.createRadialGradient(x, y, 0, x, y, r * pulse);
+      g.addColorStop(0, color + '66');
+      g.addColorStop(1, 'transparent');
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI*2); ctx.fill();
+      ctx.globalAlpha = .5 + pulse * .5;
+      ctx.fillStyle = color;
+      ctx.fillRect(x - 7, y - 5, 14, 10);
+      ctx.globalAlpha = 1;
+    }
+
+    function drawCrowd() {
+      const glowHues = [45, 200, 280, 0, 160]; // gold, cyan, purple, red, green
+      const boom = crowdExplode; // 0–1
+      for (let row = 0; row < 5; row++) {
+        for (let i = 0; i < 72; i++) {
+          const x = (i / 72) * W + row * 6;
+          const y = H * .30 + row * 10;
+          const s = 5 - row * .5;
+
+          const wave = Math.sin((i / 72 * 3 - idleT * .5 + row * .3) * Math.PI * 2) * .5 + .5;
+          const seed = Math.abs(Math.sin(i * 91.3 + row * 37.7));
+          const litThresh = .07 + boom * .55; // more lights during goal
+          const isLit = seed < litThresh;
+
+          if (isLit) {
+            const hue = glowHues[Math.floor(seed * 40) % glowHues.length];
+            const flicker = clamp(.5 + Math.sin(idleT * 4.3 + seed * 20) * .3 + boom * 1.2, 0, 1);
+            ctx.fillStyle = `hsla(${hue},90%,${70 + boom * 25}%,${flicker})`;
+            ctx.fillRect(x - s * .35, y - s * .35, s * .7, s * .7);
+          } else {
+            const bright = Math.floor(18 + wave * 10 + boom * 65);
+            ctx.fillStyle = `rgb(${bright},${Math.min(bright + boom * 20, 255)},${bright + 10})`;
+            ctx.fillRect(x - s/2, y - s/2, s, s * 1.6);
+          }
+        }
+      }
+    }
+
+    /* ────────────────────────────────────────────────
+       DRAW: GOAL
+    ──────────────────────────────────────────────── */
+    function drawGoal() {
+      // Net shadow
+      ctx.fillStyle = 'rgba(0,0,0,.28)';
+      ctx.fillRect(GX + GP, GY + GP, GW - GP*2, GH - GP);
+
+      // Net grid
+      ctx.strokeStyle = 'rgba(255,255,255,.10)';
+      ctx.lineWidth = .8;
+      const cols = 18, rows = 9;
+      for (let i = 0; i <= cols; i++) {
+        ctx.beginPath();
+        ctx.moveTo(GX + GP + i*(GW-GP*2)/cols, GY + GP);
+        ctx.lineTo(GX + GP + i*(GW-GP*2)/cols, GY + GH);
+        ctx.stroke();
+      }
+      for (let i = 0; i <= rows; i++) {
+        ctx.beginPath();
+        ctx.moveTo(GX + GP, GY + GP + i*(GH-GP)/rows);
+        ctx.lineTo(GX + GW - GP, GY + GP + i*(GH-GP)/rows);
+        ctx.stroke();
+      }
+
+      // Posts glow (pulse)
+      const postGlow = 10 + Math.sin(idleT * 1.8) * 7;
+      ctx.shadowBlur = postGlow;
+      ctx.shadowColor = '#00ccff';
+
+      // White posts
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillRect(GX, GY, GP, GH);                   // left post
+      ctx.fillRect(GX + GW - GP, GY, GP, GH);         // right post
+      ctx.fillRect(GX, GY, GW, GP);                   // crossbar
+
+      // Goal line
+      ctx.fillStyle = 'rgba(255,255,255,.55)';
+      ctx.fillRect(GX, GY + GH, GW, 3);
+
+      ctx.shadowBlur = 0;
+    }
+
+    /* ────────────────────────────────────────────────
+       DRAW: KEEPER
+    ──────────────────────────────────────────────── */
+    function drawKeeper(kx) {
+      const top = KY, kw = 52, kh = 80;
+
+      // Shadow
+      ctx.fillStyle = 'rgba(0,0,0,.3)';
+      ctx.beginPath();
+      ctx.ellipse(kx, top + kh + 5, kw * .55, 9, 0, 0, Math.PI*2);
+      ctx.fill();
+
+      // Boots
+      ctx.fillStyle = '#1a1a30';
+      ctx.fillRect(kx - kw/4 - 6, top + kh - 3, 16, 9);
+      ctx.fillRect(kx + kw/4 - 10, top + kh - 3, 16, 9);
+
+      // Socks
+      ctx.fillStyle = '#eee';
+      ctx.fillRect(kx - kw/4 - 3, top + kh - 18, 10, 16);
+      ctx.fillRect(kx + kw/4 - 6, top + kh - 18, 10, 16);
+
+      // Shorts
+      ctx.fillStyle = '#1a1a30';
+      ctx.fillRect(kx - kw/2 + 4, top + kh - 30, kw - 8, 18);
+
+      // Jersey (neon yellow)
+      ctx.fillStyle = '#f0d000';
+      ctx.fillRect(kx - kw/2 + 4, top + 22, kw - 8, kh - 52);
+
+      // Number on jersey
+      ctx.fillStyle = '#1a1a30';
+      ctx.font = 'bold 14px "Noto Sans SC"';
+      ctx.textAlign = 'center';
+      ctx.fillText('1', kx, top + kh - 44);
+
+      // Head
+      ctx.fillStyle = '#f5c8a0';
+      ctx.beginPath(); ctx.arc(kx, top + 14, 15, 0, Math.PI*2); ctx.fill();
+
+      // Hair
+      ctx.fillStyle = '#3a1800';
+      ctx.fillRect(kx - 15, top, 30, 9);
+
+      // Eyes
+      ctx.fillStyle = '#000';
+      ctx.fillRect(kx - 7, top + 12, 5, 5);
+      ctx.fillRect(kx + 2, top + 12, 5, 5);
+
+      // Gloves
+      ctx.fillStyle = '#ff6600';
+      ctx.fillRect(kx - kw/2 - 14, top + 24, 18, 15);
+      ctx.fillRect(kx + kw/2 - 4,  top + 24, 18, 15);
+    }
+
+    /* ────────────────────────────────────────────────
+       DRAW: BALL
+    ──────────────────────────────────────────────── */
+    function drawBall(x, y, r, rotation = 0) {
+      // Ground shadow (only when near ground)
+      if (y > H * .72) {
+        const sf = (y - H * .59) / (H * .41);
+        ctx.fillStyle = `rgba(0,0,0,${sf * .35})`;
+        ctx.beginPath();
+        ctx.ellipse(x, H * .615, r * .9 * sf, r * .28 * sf, 0, 0, Math.PI*2);
+        ctx.fill();
+      }
+
+      // Glow
+      ctx.shadowBlur = 18; ctx.shadowColor = 'rgba(255,255,255,.55)';
+      ctx.fillStyle = '#FFFFFF';
+      ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI*2); ctx.fill();
+      ctx.shadowBlur = 0;
+
+      // Patches
+      ctx.fillStyle = '#111';
+      ctx.beginPath(); ctx.arc(x, y, r * .28, 0, Math.PI*2); ctx.fill();
+      for (let i = 0; i < 5; i++) {
+        const a = i * Math.PI * 2 / 5 - Math.PI / 2 + rotation;
+        ctx.beginPath();
+        ctx.arc(x + Math.cos(a)*r*.6, y + Math.sin(a)*r*.6, r*.17, 0, Math.PI*2);
+        ctx.fill();
+      }
+    }
+
+    /* ────────────────────────────────────────────────
+       DRAW: CROSSHAIR & AIM
+    ──────────────────────────────────────────────── */
+    function drawCrosshair(x, y) {
+      const s = 22;
+      ctx.shadowBlur = 14; ctx.shadowColor = '#FF4444';
+      ctx.strokeStyle = '#FF4444'; ctx.lineWidth = 2;
+
+      ctx.beginPath();
+      ctx.moveTo(x - s, y); ctx.lineTo(x - s*.35, y);
+      ctx.moveTo(x + s*.35, y); ctx.lineTo(x + s, y);
+      ctx.moveTo(x, y - s); ctx.lineTo(x, y - s*.35);
+      ctx.moveTo(x, y + s*.35); ctx.lineTo(x, y + s);
+      ctx.stroke();
+
+      ctx.beginPath(); ctx.arc(x, y, s*.5, 0, Math.PI*2); ctx.stroke();
+      ctx.shadowBlur = 0;
+    }
+
+    function drawTrajectory(tx, ty) {
+      ctx.strokeStyle = 'rgba(255,100,100,.32)';
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([7, 7]);
+      ctx.beginPath();
+      ctx.moveTo(BSX, BSY);
+      const cpX = (BSX + tx) / 2;
+      const cpY = Math.min(BSY, ty) - 55;
+      ctx.quadraticCurveTo(cpX, cpY, tx, ty);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+
+    function drawZoneHighlight(tx) {
+      const zone = tx < GX + GW/3 ? 0 : tx < GX + GW*2/3 ? 1 : 2;
+      ctx.fillStyle = 'rgba(255,100,100,.06)';
+      ctx.fillRect(GX + GP + zone*GW/3, GY + GP, GW/3 - GP, GH - GP);
+    }
+
+    /* ────────────────────────────────────────────────
+       BALL & KEEPER ANIMATION HELPERS
+    ──────────────────────────────────────────────── */
+    function getBallPos(t) {
+      const windDrift = windX * t * t * 52; // quadratic drift, max ~52px at windX=1
+      const x = lerp(BSX, aimX, t) + windDrift;
+      const arc = (BSY - aimY) * .38 + 75;
+      const y = lerp(BSY, aimY, t) - Math.sin(t * Math.PI) * arc;
+      const r = lerp(BSR, 8, t);
+      return { x, y, r };
+    }
+
+    function getKeeperX(t) {
+      // keeper dives fast, reaches target by t≈0.36
+      keeperCurrentX = lerp(KSX, keeperTargetX, clamp(t * 2.8, 0, 1));
+      return keeperCurrentX;
+    }
+
+    /* ────────────────────────────────────────────────
+       GOAL CHECK
+    ──────────────────────────────────────────────── */
+    function checkGoal() {
+      const finalX = aimX + windX * 52; // actual landing X with wind
+      const inX = finalX > GX + GP + 6  && finalX < GX + GW - GP - 6;
+      const inY = aimY > GY + GP + 6  && aimY < GY + GH - 6;
+      if (!inX || !inY) return false;
+      return Math.abs(keeperTargetX - finalX) > 52;
+    }
+
+    /* ────────────────────────────────────────────────
+       CONFETTI
+    ──────────────────────────────────────────────── */
+    function spawnConfetti() {
+      const cols = ['#FFD700','#FF4444','#00FF88','#00CCFF','#FF69B4','#F5A623','#fff'];
+      for (let i = 0; i < 70; i++) {
+        particles.push({
+          x: Math.random() * W, y: -15,
+          vx: (Math.random() - .5) * 9,
+          vy: Math.random() * 4 + 2,
+          size: Math.random() * 9 + 4,
+          color: cols[Math.floor(Math.random() * cols.length)],
+          rot: Math.random() * Math.PI * 2,
+          rv: (Math.random() - .5) * .25,
+        });
+      }
+    }
+
+    function tickParticles() {
+      particles.forEach(p => {
+        p.x += p.vx; p.y += p.vy;
+        p.vy += p.life !== undefined ? 0.05 : 0.12;
+        p.rot += p.rv;
+        if (p.life !== undefined) { p.vx *= 0.96; p.vy *= 0.96; p.life -= p.decay; }
+      });
+      particles = particles.filter(p => p.y < H + 20 && (p.life === undefined || p.life > 0));
+    }
+
+    function drawParticles() {
+      particles.forEach(p => {
+        ctx.save();
+        ctx.translate(p.x, p.y); ctx.rotate(p.rot);
+        ctx.globalAlpha = p.life !== undefined ? p.life : 1;
+        ctx.fillStyle = p.color;
+        if (p.life !== undefined) {
+          ctx.shadowBlur = 8; ctx.shadowColor = p.color;
+          ctx.beginPath(); ctx.arc(0, 0, p.size * .6, 0, Math.PI*2); ctx.fill();
+          ctx.shadowBlur = 0;
+        } else {
+          ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size * .55);
+        }
+        ctx.restore();
+      });
+    }
+
+    /* ────────────────────────────────────────────────
+       FIREWORK BURST
+    ──────────────────────────────────────────────── */
+    function spawnFirework(cx, cy) {
+      const cols = ['#FFD700','#FF4444','#00FF88','#00CCFF','#FF69B4','#F5A623','#fff'];
+      for (let i = 0; i < 28; i++) {
+        const angle = (i / 28) * Math.PI * 2;
+        const speed = 2.5 + Math.random() * 5.5;
+        particles.push({
+          x: cx, y: cy,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed - 1,
+          size: Math.random() * 6 + 3,
+          color: cols[Math.floor(Math.random() * cols.length)],
+          rot: 0, rv: 0,
+          life: 1, decay: 0.016 + Math.random() * 0.018,
+        });
+      }
+    }
+
+    /* ────────────────────────────────────────────────
+       BALL FIRE TRAIL
+    ──────────────────────────────────────────────── */
+    function drawBallTrail() {
+      for (let i = 0; i < ballTrail.length; i++) {
+        const frac = i / Math.max(ballTrail.length, 1);
+        const p = ballTrail[i];
+        const alpha = frac * 0.55;
+        const r = p.r * (0.25 + frac * 0.75);
+        const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, r * 1.8);
+        grad.addColorStop(0,   `rgba(255,255,180,${alpha})`);
+        grad.addColorStop(0.4, `rgba(255,140,0,${alpha * 0.7})`);
+        grad.addColorStop(1,   `rgba(255,30,0,0)`);
+        ctx.fillStyle = grad;
+        ctx.beginPath(); ctx.arc(p.x, p.y, r * 1.8, 0, Math.PI*2); ctx.fill();
+      }
+    }
+
+    /* ────────────────────────────────────────────────
+       POWER METER (drawn on canvas bottom)
+    ──────────────────────────────────────────────── */
+    function drawPowerMeter() {
+      const mw = 140, mh = 13;
+      const mx = W / 2 - mw / 2, my = H - 38;
+
+      ctx.fillStyle = 'rgba(0,0,0,.65)';
+      ctx.fillRect(mx - 5, my - 16, mw + 10, mh + 22);
+
+      ctx.fillStyle = '#222';
+      ctx.fillRect(mx, my, mw, mh);
+
+      const hue = Math.round(120 - chargeT * 120);
+      ctx.fillStyle = `hsl(${hue},100%,52%)`;
+      ctx.fillRect(mx, my, mw * chargeT, mh);
+
+      // Animated flicker at tip
+      if (chargeT > 0.05) {
+        ctx.shadowBlur = 12; ctx.shadowColor = `hsl(${hue},100%,60%)`;
+        ctx.fillRect(mx + mw * chargeT - 4, my, 4, mh);
+        ctx.shadowBlur = 0;
+      }
+
+      ctx.strokeStyle = '#F5A623';
+      ctx.lineWidth = 1.5;
+      ctx.strokeRect(mx, my, mw, mh);
+
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 8px "Press Start 2P"';
+      ctx.textAlign = 'center';
+      ctx.fillText('POWER', W / 2, my - 4);
+    }
+
+    /* ────────────────────────────────────────────────
+       WIND INDICATOR (top-right HUD)
+    ──────────────────────────────────────────────── */
+    function drawWindIndicator() {
+      if (Math.abs(windX) < 0.15) return;
+      const wx = W - 88, wy = 18;
+      ctx.save();
+      ctx.fillStyle = 'rgba(0,0,0,.55)';
+      ctx.fillRect(wx - 32, wy - 13, 100, 26);
+
+      const arrowLen = Math.abs(windX) * 22;
+      const dir = windX > 0 ? 1 : -1;
+      const col = windX > 0 ? '#00CCFF' : '#FF8888';
+      ctx.strokeStyle = col;
+      ctx.lineWidth = 2.2;
+      ctx.shadowBlur = 10; ctx.shadowColor = col;
+      ctx.beginPath();
+      ctx.moveTo(wx + 8, wy + 1);
+      ctx.lineTo(wx + 8 + dir * arrowLen, wy + 1);
+      ctx.stroke();
+      // arrowhead
+      ctx.beginPath();
+      ctx.moveTo(wx + 8 + dir * arrowLen,       wy + 1);
+      ctx.lineTo(wx + 8 + dir * (arrowLen - 6), wy - 4);
+      ctx.moveTo(wx + 8 + dir * arrowLen,       wy + 1);
+      ctx.lineTo(wx + 8 + dir * (arrowLen - 6), wy + 6);
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+
+      ctx.fillStyle = '#ccc';
+      ctx.font = '7px "Press Start 2P"';
+      ctx.textAlign = 'left';
+      ctx.fillText('WIND', wx - 30, wy + 5);
+      ctx.restore();
+    }
+
+    /* ────────────────────────────────────────────────
+       FULL DRAW PASS
+    ──────────────────────────────────────────────── */
+    function draw() {
+      // ── Screen shake ──
+      ctx.save();
+      if (screenShakeAmt > 0.5) {
+        ctx.translate(
+          (Math.random() - .5) * screenShakeAmt,
+          (Math.random() - .5) * screenShakeAmt
+        );
+      }
+
+      drawBg();
+      drawGoal();
+
+      if (state === 'ready') {
+        if (Math.abs(keeperCurrentX - KSX) > 1) {
+          keeperCurrentX = lerp(keeperCurrentX, KSX, .08);
+        } else {
+          keeperCurrentX = KSX;
+        }
+        drawKeeper(keeperCurrentX + Math.sin(idleT * 1.3) * 7);
+        drawZoneHighlight(mouseX);
+        drawTrajectory(mouseX, mouseY);
+        drawCrosshair(mouseX, mouseY);
+
+        const bobY = BSY + Math.sin(idleT * 2.8) * 4;
+        const bobR = BSR + Math.sin(idleT * 2.8) * .6;
+        ballRot += .025;
+        drawBall(BSX, bobY, bobR, ballRot);
+
+        ctx.fillStyle = 'rgba(245,166,35,.75)';
+        ctx.font = 'bold 13px "Noto Sans SC"';
+        ctx.textAlign = 'center';
+        ctx.fillText('按住鼠标蓄力，松开射门！', W/2, H - 12);
+        drawWindIndicator();
+
+      } else if (state === 'charging') {
+        if (Math.abs(keeperCurrentX - KSX) > 1) {
+          keeperCurrentX = lerp(keeperCurrentX, KSX, .08);
+        } else {
+          keeperCurrentX = KSX;
+        }
+        drawKeeper(keeperCurrentX + Math.sin(idleT * 1.3) * 9);
+        drawZoneHighlight(mouseX);
+        drawTrajectory(mouseX, mouseY);
+        drawCrosshair(mouseX, mouseY);
+
+        // Ball vibrates harder as charge builds
+        const vib = chargeT * 4;
+        const vibX = BSX + (Math.random() - .5) * vib;
+        const vibY = BSY + (Math.random() - .5) * vib;
+        ballRot += .04 + chargeT * .14;
+        drawBall(vibX, vibY, BSR + chargeT * 2.5, ballRot);
+
+        drawPowerMeter();
+        drawWindIndicator();
+
+        const pulse = .65 + Math.sin(idleT * 12) * .35;
+        ctx.fillStyle = `rgba(255,80,80,${pulse})`;
+        ctx.font = 'bold 14px "Noto Sans SC"';
+        ctx.textAlign = 'center';
+        ctx.fillText('松开射门！', W/2, H - 12);
+
+      } else if (state === 'shooting') {
+        const kx = getKeeperX(animT);
+        drawKeeper(kx);
+        const b = getBallPos(animT);
+        ballRot += .18;
+        drawBallTrail();
+        drawBall(b.x, b.y, b.r, ballRot);
+        // Record trail
+        ballTrail.push({ x: b.x, y: b.y, r: b.r });
+        if (ballTrail.length > 20) ballTrail.shift();
+        drawParticles();
+        drawWindIndicator();
+
+      } else if (state === 'result') {
+        drawKeeper(keeperCurrentX);
+        const b = getBallPos(1);
+        drawBallTrail();
+        drawBall(b.x, b.y, b.r * .9);
+        drawParticles();
+        tickParticles();
+
+        // Goal flash
+        if (goalFlash > 0) {
+          ctx.fillStyle = `rgba(255,255,255,${goalFlash * .38})`;
+          ctx.fillRect(0, 0, W, H);
+        }
+
+        // Colour tint
+        resultAlpha = Math.min(resultAlpha + .055, 1);
+        ctx.fillStyle = isGoal
+          ? `rgba(0,255,136,${resultAlpha * .14})`
+          : `rgba(255,68,68,${resultAlpha * .12})`;
+        ctx.fillRect(0, 0, W, H);
+
+        // Big result text — cubic ease-out scale-in
+        const ease = 1 - Math.pow(1 - resultAlpha, 3);
+        ctx.save();
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.translate(W / 2, H / 2 - 8);
+        ctx.scale(ease * .95 + .05, ease * .95 + .05);
+        ctx.globalAlpha = ease;
+
+        if (isGoal) {
+          ctx.shadowBlur = 55; ctx.shadowColor = '#00FF88';
+          ctx.fillStyle = '#00FF88';
+          ctx.font = 'bold 72px "Press Start 2P", monospace';
+          ctx.fillText('GOAL!!!', 0, 0);
+          ctx.shadowBlur = 0;
+          ctx.fillStyle = '#fff';
+          ctx.font = 'bold 16px "Noto Sans SC"';
+          ctx.fillText('⚽ 射门成功！', 0, 52);
+          if (comboCount > 1) {
+            ctx.fillStyle = '#F5A623';
+            ctx.font = 'bold 10px "Press Start 2P"';
+            ctx.fillText(`${comboCount}x COMBO!!!`, 0, 80);
+          }
+        } else {
+          ctx.shadowBlur = 35; ctx.shadowColor = '#FF4444';
+          ctx.fillStyle = '#FF4444';
+          const finalX = aimX + windX * 52;
+          const inGoal = finalX > GX+GP && finalX < GX+GW-GP && aimY > GY+GP && aimY < GY+GH;
+          const label  = inGoal ? 'SAVED!' : 'MISSED!';
+          const sub    = inGoal ? '被守门员扑救！继续努力！' : '偏出球门！下次再来！';
+          ctx.font = 'bold 62px "Press Start 2P", monospace';
+          ctx.fillText(label, 0, 0);
+          ctx.shadowBlur = 0;
+          ctx.fillStyle = '#fff';
+          ctx.font = 'bold 16px "Noto Sans SC"';
+          ctx.fillText(sub, 0, 52);
+        }
+        ctx.restore();
+        drawWindIndicator();
+      }
+
+      ctx.restore(); // end screen shake
+    }
+
+    /* ────────────────────────────────────────────────
+       GAME LOOP
+    ──────────────────────────────────────────────── */
+    function gameLoop() {
+      idleT += 0.016;
+
+      // Decay screen FX
+      screenShakeAmt = Math.max(0, screenShakeAmt - 1.4);
+      goalFlash      = Math.max(0, goalFlash - 0.038);
+      crowdExplode   = Math.max(0, crowdExplode - 0.007);
+
+      if (state === 'charging') {
+        chargeT = Math.min(1, chargeT + chargeRate);
+        // Oscillate when maxed for drama
+        if (chargeT >= 0.98) chargeT = 0.86 + Math.sin(idleT * 14) * 0.14;
+      }
+
+      if (state === 'shooting') {
+        const dt = slowMoActive ? 0.009 : 0.026;
+        animT += dt;
+
+        // Trigger slow-mo as ball approaches goal
+        if (!slowMoActive && animT > 0.55) {
+          const b = getBallPos(animT);
+          if (b.y < GY + GH + 50) slowMoActive = true;
+        }
+
+        if (animT >= 1) {
+          animT = 1;
+          slowMoActive = false;
+          ballTrail = [];
+          isGoal = checkGoal();
+          if (isGoal) {
+            score++;
+            comboCount++;
+            document.getElementById('scoreDisplay').textContent = String(score).padStart(2,'0');
+            spawnConfetti();
+            spawnFirework(aimX, aimY);
+            spawnFirework(aimX + 45, aimY - 25);
+            spawnFirework(aimX - 35, aimY + 15);
+            screenShakeAmt = 20;
+            goalFlash      = 1;
+            crowdExplode   = 1;
+          } else {
+            comboCount = 0;
+          }
+          resultAlpha = 0;
+          state = 'result';
+
+          clearTimeout(resultTimerID);
+          resultTimerID = setTimeout(() => {
+            showPrize();
+            state = 'ready';
+            keeperTargetX = KSX;
+            animT = 0; resultAlpha = 0;
+          }, 2800);
+        }
+      }
+
+      draw();
+      rafId = requestAnimationFrame(gameLoop);
+    }
+
+    /* ────────────────────────────────────────────────
+       CHARGE + SHOOT
+    ──────────────────────────────────────────────── */
+    function startCharge(e) {
+      if (state !== 'ready') return;
+      const p = toCanvas(e);
+      mouseX = p.x; mouseY = p.y;
+      chargeT = 0;
+      windX = (Math.random() - .5) * 2.4; // new wind each shot
+      state = 'charging';
+      document.getElementById('idleOverlay').classList.add('hidden');
+    }
+
+    function releaseShoot() {
+      if (state !== 'charging') return;
+      aimX = mouseX; aimY = mouseY;
+
+      // Low power = ball drifts toward crossbar bottom
+      const powerMult = 0.35 + chargeT * 0.65;
+      aimY = lerp(GY + GH - 10, mouseY, powerMult);
+
+      // Keeper AI: ~42% same side (save), ~42% opposite (goal), ~16% stay
+      const sign = aimX >= KSX ? 1 : -1;
+      const r = Math.random();
+      if      (r < .42) keeperTargetX = KSX + sign * GW * .40;
+      else if (r < .84) keeperTargetX = KSX - sign * GW * .40;
+      else              keeperTargetX = KSX;
+
+      animT = 0;
+      state = 'shooting';
+    }
+
+    /* ────────────────────────────────────────────────
+       PRIZE REVEAL
+    ──────────────────────────────────────────────── */
+    function showPrize() {
+      const sec = document.getElementById('prizeSection');
+      if (sec.classList.contains('hidden')) {
+        sec.classList.remove('hidden');
+      }
+      sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    /* ────────────────────────────────────────────────
+       EVENT HANDLERS
+    ──────────────────────────────────────────────── */
+    function toCanvas(e) {
+      const rect = canvas.getBoundingClientRect();
+      const sx = W / rect.width, sy = H / rect.height;
+      const src = e.touches ? e.touches[0] : e;
+      return {
+        x: clamp((src.clientX - rect.left) * sx, GX + 10, GX + GW - 10),
+        y: clamp((src.clientY - rect.top)  * sy, GY + 10, GY + GH - 10),
+      };
+    }
+
+    canvas.addEventListener('mousemove', e => {
+      const p = toCanvas(e);
+      mouseX = p.x; mouseY = p.y;
+      if (state === 'ready' || state === 'charging')
+        document.getElementById('idleOverlay').classList.add('hidden');
+    });
+
+    canvas.addEventListener('touchmove', e => {
+      e.preventDefault();
+      const p = toCanvas(e);
+      mouseX = p.x; mouseY = p.y;
+      if (state === 'ready' || state === 'charging')
+        document.getElementById('idleOverlay').classList.add('hidden');
+    }, { passive: false });
+
+    canvas.addEventListener('mousedown',  startCharge);
+    canvas.addEventListener('mouseup',    releaseShoot);
+    canvas.addEventListener('mouseleave', releaseShoot); // safety: release if cursor exits
+
+    canvas.addEventListener('touchstart', e => {
+      e.preventDefault();
+      startCharge(e);
+    }, { passive: false });
+
+    canvas.addEventListener('touchend', e => {
+      e.preventDefault();
+      if (e.changedTouches && e.changedTouches[0]) {
+        const p = toCanvas({ clientX: e.changedTouches[0].clientX, clientY: e.changedTouches[0].clientY });
+        mouseX = p.x; mouseY = p.y;
+      }
+      releaseShoot();
+    }, { passive: false });
+
+    /* ────────────────────────────────────────────────
+       KICK OFF
+    ──────────────────────────────────────────────── */
+    gameLoop();
+  </script>
+</body>
+</html>
